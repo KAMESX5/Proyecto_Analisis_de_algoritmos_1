@@ -118,11 +118,9 @@ def subastas_voraz(ofertas, A, B):
         if (minimo > cantidad_acciones or cantidad_acciones == 0) and i > 0:
             precio_an, minimo_an, maximo_an = ofertas_ordenadas[i-1]
             faltantes = minimo - cantidad_acciones
-            print(compra_por_oferta[-1], faltantes , maximo_an)
             if compra_por_oferta[-1] - faltantes < maximo_an:
                 ganancia_antes = precio_an * compra_por_oferta[-1]
                 ganacia_quitando = (precio_an * (compra_por_oferta[-1] - faltantes)) + (precio * minimo_an)
-                print(ganacia_quitando,ganancia_antes)
                 if ganacia_quitando > ganancia_antes:
                     compra_por_oferta[-1] = compra_por_oferta[-1] - faltantes
                     cantidad_acciones += faltantes
@@ -142,7 +140,6 @@ def subastas_voraz(ofertas, A, B):
     ganancia_maxima = 0
     indice = 0
     solucion = []
-    print(compra_por_oferta)
     for precio, minimo, maximo in ofertas_ordenadas:
         if indice >= len(compra_por_oferta):
             break

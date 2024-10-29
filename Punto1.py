@@ -130,10 +130,6 @@ def terminal_dinamica(cadena1,cadena2):
         # Guardar la solución mínima
         memoria[i][j] = min_costo
         pasos[i][j] = min_pasos
-        if i == 0 and j == 0:
-            for x in memoria:
-                print(x)
-
         return min_costo, min_pasos
 
     n = len(cadena1)+1  # Número de columnas
