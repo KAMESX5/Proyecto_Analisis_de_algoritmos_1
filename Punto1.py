@@ -140,66 +140,48 @@ def terminal_dinamica(cadena1,cadena2):
     return terminal_dinamica_aux(0,0,matriz,paso)
 
 
-def terminal_voraz(ca1,ca2):
-    def coincidencias(cadena1,cadena2):      
-        coincidencias = 0
-        for i in range(0,min(2,len(cadena1),len(cadena2))):
-            if cadena1[i] == cadena2[i]:
-                coincidencias += 1
-        return coincidencias
-    def terminal_voraz_aux(cadena1,cadena2,pasos,costo_total):
+def terminal_voraz(ca1, ca2):
+    def terminal_voraz_aux(cadena1, cadena2, pasos, costo_total):
         if len(cadena1) == 0:
-            costo = costo_insert*len(cadena2)
-            return costo+costo_total, pasos + [f"insert {x}" for x in cadena2]
-        if len(cadena2) == 0:
-            if len(cadena1) == 0:
-                return costo_total,pasos
-            else:
-                if costo_delete * len(cadena1) < costo_kill:
-                    return costo_total + (costo_delete*len(cadena1)), pasos + [f"delete {x}" for x in cadena1]
-                else:
-                    return costo_total+costo_kill, pasos + ["kill"]
+            costo = costo_insert * len(cadena2)
+            return costo + costo_total, pasos + [f"insert {x}" for x in cadena2]
         
-        beneficio_insertar = costo_insert/(coincidencias(cadena1,cadena2[1:])+1+2)
-        beneficio_eliminar = costo_delete/(coincidencias(cadena1[1:],cadena2)+1+2)
-        beneficio_reemplazar = costo_replace/(coincidencias(cadena1[1:],cadena2[1:])+1+3)
-        #beneficio_kill = (costo_kill+(costo_insert*len(cadena2)))/1
+        if len(cadena2) == 0:
+            if costo_delete * len(cadena1) < costo_kill:
+                return costo_total + (costo_delete * len(cadena1)), pasos + [f"delete {x}" for x in cadena1]
+            else:
+                return costo_total + costo_kill, pasos + ["kill"]
+        
+        # Calcular los costos directos de cada operación sin coincidencias
+        beneficio_insertar = costo_insert
+        beneficio_eliminar = costo_delete
+        beneficio_reemplazar = costo_replace
         beneficio_avanzar = float("inf")
-        #print((len(cadena1)*100)/costo_kill+(costo_insert*len(cadena2)))
-        #print(cadena1,cadena2)
+        
         if cadena1[0] == cadena2[0]:
-            beneficio_avanzar = costo_advance/(coincidencias(cadena1[1:],cadena2[1:])+1+3+1)
+            beneficio_avanzar = costo_advance
 
-        #print(beneficio_insertar,beneficio_eliminar,beneficio_reemplazar,beneficio_avanzar)
-        costo,pasos = min(
+        # Elegir la operación con menor costo directo
+        costo, pasos = min(
             (beneficio_insertar, pasos + ["insert " + cadena2[0]]),
-            (beneficio_eliminar, pasos + ["delete"] ),
+            (beneficio_eliminar, pasos + ["delete"]),
             (beneficio_reemplazar, pasos + ["replace " + cadena1[0] + " with " + cadena2[0]]),
-            #(beneficio_kill, pasos + ["kill"]),
             (beneficio_avanzar, pasos + ["advance"]),
             key=lambda x: x[0]
         )
-        if costo == beneficio_insertar:
-            #print(cadena1,cadena2,"insertar")
-            return terminal_voraz_aux(cadena1,cadena2[1:],pasos,costo_total+costo_insert)
-        if costo == beneficio_eliminar:
-            #print(cadena1,cadena2,"eliminar")
-            return terminal_voraz_aux(cadena1[1:],cadena2,pasos,costo_total+costo_delete)
-        if costo == beneficio_reemplazar:
-            #print(cadena1,cadena2,"reemplazar")
-            return terminal_voraz_aux(cadena1[1:],cadena2[1:],pasos,costo_total+costo_replace)
-        if costo == beneficio_avanzar:
-            #print(cadena1,cadena2,"avanzar")
-            return terminal_voraz_aux(cadena1[1:],cadena2[1:],pasos,costo_total+costo_advance)
-        else:
-            costo = costo_kill + (costo_insert*len(cadena2))
-            return costo+costo_total, pasos + [f"insert {x}" for x in cadena2]
 
-    return terminal_voraz_aux(ca1,ca2,[],0)
+        if costo == beneficio_insertar:
+            return terminal_voraz_aux(cadena1, cadena2[1:], pasos, costo_total + costo_insert)
+        elif costo == beneficio_eliminar:
+            return terminal_voraz_aux(cadena1[1:], cadena2, pasos, costo_total + costo_delete)
+        elif costo == beneficio_reemplazar:
+            return terminal_voraz_aux(cadena1[1:], cadena2[1:], pasos, costo_total + costo_replace)
+        elif costo == beneficio_avanzar:
+            return terminal_voraz_aux(cadena1[1:], cadena2[1:], pasos, costo_total + costo_advance)
+
+    return terminal_voraz_aux(ca1, ca2, [], 0)
 
     
-
-        
     #return terminal_voraz_aux(0,0)
 
 if __name__ == "__main__":
