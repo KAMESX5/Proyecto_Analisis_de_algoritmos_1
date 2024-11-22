@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subastas</title>
+</head>
+<body>
+    <h1>Resolver Subastas</h1>
+    <form action="/resolver" method="post">
+        <label for="acciones">Cantidad de acciones (A):</label><br>
+        <input type="number" id="acciones" name="acciones" required><br><br>
+        
+        <label for="precio_minimo">Precio mínimo (B):</label><br>
+        <input type="number" id="precio_minimo" name="precio_minimo" required><br><br>
+        
+        <label for="ofertas">Ofertas (formato: precio,mínimo,máximo por línea):</label><br>
+        <textarea id="ofertas" name="ofertas" rows="5" cols="30" required></textarea><br><br>
+        
+        <label for="metodo">Método:</label><br>
+        <select id="metodo" name="metodo" required>
+            <option value="voraz">Voraz</option>
+            <option value="fuerza_bruta">Fuerza Bruta</option>
+            <option value="dinamico">Programación Dinámica</option>
+        </select><br><br>
+        
+        <button type="submit">Resolver</button>
+    </form>
+</body>
+</html>
