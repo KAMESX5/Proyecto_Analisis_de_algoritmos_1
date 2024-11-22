@@ -1,30 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subastas</title>
+    <title>Inicio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Resolver Subastas</h1>
-    <form action="/resolver" method="post">
-        <label for="acciones">Cantidad de acciones (A):</label><br>
-        <input type="number" id="acciones" name="acciones" required><br><br>
-        
-        <label for="precio_minimo">Precio mínimo (B):</label><br>
-        <input type="number" id="precio_minimo" name="precio_minimo" required><br><br>
-        
-        <label for="ofertas">Ofertas (formato: precio,mínimo,máximo por línea):</label><br>
-        <textarea id="ofertas" name="ofertas" rows="5" cols="30" required></textarea><br><br>
-        
-        <label for="metodo">Método:</label><br>
-        <select id="metodo" name="metodo" required>
-            <option value="voraz">Voraz</option>
-            <option value="fuerza_bruta">Fuerza Bruta</option>
-            <option value="dinamico">Programación Dinámica</option>
-        </select><br><br>
-        
-        <button type="submit">Resolver</button>
-    </form>
+    <header>
+        <h1>Bienvenido al Sistema de Análisis de Algoritmos</h1>
+        <p>Elige una opción para continuar:</p>
+    </header>
+
+    <main>
+        <div class="options">
+            <!-- Opción para Subasta -->
+            <section class="option">
+                <h2>Subasta</h2>
+                <form action="/resolver_subasta" method="POST">
+                    <label for="acciones">Número de Acciones:</label>
+                    <input type="number" id="acciones" name="acciones" required>
+                    <br>
+                    <label for="precio_minimo">Precio Mínimo:</label>
+                    <input type="number" id="precio_minimo" name="precio_minimo" required>
+                    <br>
+                    <label for="ofertas">Ofertas (formato: precio,cantidad):</label>
+                    <textarea id="ofertas" name="ofertas" rows="4" required></textarea>
+                    <br>
+                    <label for="metodo">Método:</label>
+                    <select id="metodo" name="metodo">
+                        <option value="fuerza_bruta">Fuerza Bruta</option>
+                        <option value="dinamico">Dinamico</option>
+                        <option value="voraz">Voraz</option>
+                    </select>
+                    <br>
+                    <button type="submit">Resolver Subasta</button>
+                </form>
+            </section>
+
+            <!-- Opción para Terminal -->
+            <section class="option">
+                <h2>Terminal</h2>
+                <form action="/resolver_terminal" method="POST">
+                    <label for="cadena1">Cadena 1:</label>
+                    <input id="cadena1" name="cadena1" required>
+                    <br>
+                    <label for="cadena2">Cadena 2:</label>
+                    <input id="cadena2" name="cadena2" required>
+                    <br>
+                    <label for="metodo">Método:</label>
+                    <select id="metodo" name="metodo">
+                        <option value="fuerza_bruta">Fuerza Bruta</option>
+                        <option value="dinamico">Dinamico</option>
+                        <option value="voraz">Voraz</option>
+                    </select>
+                    <br>
+                    <button type="submit">Resolver Terminal</button>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2024 Proyecto de Análisis de Algoritmos</p>
+    </footer>
 </body>
 </html>
