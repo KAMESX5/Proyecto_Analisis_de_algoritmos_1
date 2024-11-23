@@ -36,13 +36,26 @@ def resolver_terminal():
         cadena1 = request.form['cadena1']
         cadena2 = request.form['cadena2']
         metodo = request.form['metodo']
+
+        # Capturar costos
+        costo_insert = int(request.form['costo_insert'])
+        costo_delete = int(request.form['costo_delete'])
+        costo_replace = int(request.form['costo_replace'])
+        costo_kill = int(request.form['costo_kill'])
+        costo_advance = int(request.form['costo_advance'])
+
         terminal_inteligente = Terminal()
+
+        # Cambiar costos en la terminal
+        terminal_inteligente.cambiar_costos(costo_insert, costo_delete, costo_replace, costo_kill, costo_advance)
+
+        # Resolver según el método
         if metodo == 'fuerza_bruta':
-            ganancia, solucion = terminal_inteligente.terminal_fuerzaBruta(cadena1,cadena2)
+            ganancia, solucion = terminal_inteligente.terminal_fuerzaBruta(cadena1, cadena2)
         elif metodo == 'dinamico':
-            ganancia, solucion = terminal_inteligente.terminal_dinamica(cadena1,cadena2)
+            ganancia, solucion = terminal_inteligente.terminal_dinamica(cadena1, cadena2)
         elif metodo == 'voraz':
-            ganancia, solucion = terminal_inteligente.terminal_voraz(cadena1,cadena2)
+            ganancia, solucion = terminal_inteligente.terminal_voraz(cadena1, cadena2)
         else:
             return "Método no válido.", 400
 

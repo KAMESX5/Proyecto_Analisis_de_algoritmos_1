@@ -168,7 +168,7 @@ class Terminal:
                 else:
                     return costo_total + self.costo_kill, pasos + ["kill"]
             
-            # Calcular los costos directos de cada operación sin coincidencias
+            # Calcular los costos directos de cada operación
             beneficio_insertar = self.costo_insert
             beneficio_eliminar = self.costo_delete
             beneficio_reemplazar = self.costo_replace
@@ -177,25 +177,31 @@ class Terminal:
             if cadena1[0] == cadena2[0]:
                 beneficio_avanzar = self.costo_advance
 
-            # Elegir la operación con menor costo directo
-            costo, pasos = min(
-                (beneficio_insertar, pasos + ["insert " + cadena2[0]]),
-                (beneficio_eliminar, pasos + ["delete"]),
-                (beneficio_reemplazar, pasos + ["replace " + cadena1[0] + " with " + cadena2[0]]),
-                (beneficio_avanzar, pasos + ["advance"]),
-                key=lambda x: x[0]
-            )
+            # Crear lista de opciones con desempate basado en prioridad
+            opciones = [
+                (beneficio_avanzar, pasos + ["advance"], "avanzar"),
+                (beneficio_reemplazar, pasos + [f"replace {cadena1[0]} with {cadena2[0]}"], "reemplazar"),
+                (beneficio_insertar, pasos + [f"insert {cadena2[0]}"], "insertar"),
+                (beneficio_eliminar, pasos + ["delete"], "eliminar")
+            ]
+            
+            # Ordenar las opciones por costo y luego por prioridad
+            opciones.sort(key=lambda x: (x[0], ["avanzar", "reemplazar", "insertar", "eliminar"].index(x[2])))
 
-            if costo == beneficio_insertar:
-                return terminal_voraz_aux(cadena1, cadena2[1:], pasos, costo_total + self.costo_insert)
-            elif costo == beneficio_eliminar:
-                return terminal_voraz_aux(cadena1[1:], cadena2, pasos, costo_total + self.costo_delete)
-            elif costo == beneficio_reemplazar:
-                return terminal_voraz_aux(cadena1[1:], cadena2[1:], pasos, costo_total + self.costo_replace)
-            elif costo == beneficio_avanzar:
-                return terminal_voraz_aux(cadena1[1:], cadena2[1:], pasos, costo_total + self.costo_advance)
+            # Seleccionar la mejor opción
+            costo, nuevos_pasos, accion = opciones[0]
+
+            if accion == "avanzar":
+                return terminal_voraz_aux(cadena1[1:], cadena2[1:], nuevos_pasos, costo_total + self.costo_advance)
+            elif accion == "reemplazar":
+                return terminal_voraz_aux(cadena1[1:], cadena2[1:], nuevos_pasos, costo_total + self.costo_replace)
+            elif accion == "insertar":
+                return terminal_voraz_aux(cadena1, cadena2[1:], nuevos_pasos, costo_total + self.costo_insert)
+            elif accion == "eliminar":
+                return terminal_voraz_aux(cadena1[1:], cadena2, nuevos_pasos, costo_total + self.costo_delete)
 
         return terminal_voraz_aux(ca1, ca2, [], 0)
+
 
     
     
