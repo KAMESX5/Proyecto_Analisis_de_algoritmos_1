@@ -5,6 +5,10 @@ import os
 
 app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__), 'templates'))
 
+#terminal_inteligente = Terminal(costo_insert, costo_delete, costo_replace, costo_kill, costo_advance)
+terminal_inteligente = Terminal()
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -44,7 +48,7 @@ def resolver_terminal():
         costo_kill = int(request.form['costo_kill'])
         costo_advance = int(request.form['costo_advance'])
 
-        terminal_inteligente = Terminal()
+        
 
         # Cambiar costos en la terminal
         terminal_inteligente.cambiar_costos(costo_insert, costo_delete, costo_replace, costo_kill, costo_advance)
